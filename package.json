@@ -6,7 +6,9 @@
   "scripts": {
     "test": "playwright test",
     "test:headed": "playwright test --headed",
-    "test:ui": "playwright test --ui"
+    "test:ui": "playwright test --ui",
+    "package:pos": "npm pack && tar -czf pos-test-package.tar.gz *.tgz tests/ playwright.config.ts package.json",
+    "install:pos": "npm ci --production=false && npx playwright install chromium"
   },
   "author": "",
   "license": "ISC",

@@ -52,7 +52,67 @@ export default defineConfig({
         ...devices['Desktop Chrome'],
         launchOptions: {
           slowMo: 1000, // Slow down for better video visibility
-          args: ['--disable-web-security', '--disable-features=VizDisplayCompositor']
+          args: [
+            '--disable-web-security', 
+            '--disable-features=VizDisplayCompositor'
+          ]
+        }
+      },
+    },
+
+    // POS Kiosk Mode Configuration
+    {
+      name: 'pos-kiosk',
+      use: {
+        ...devices['Desktop Chrome'],
+        viewport: { width: 1024, height: 768 }, // Common POS resolution
+        launchOptions: {
+          args: [
+            '--kiosk',
+            '--start-fullscreen',
+            '--disable-infobars',
+            '--disable-session-crashed-bubble',
+            '--disable-translate',
+            '--no-first-run',
+            '--disable-default-apps',
+            '--disable-extensions',
+            '--disable-plugins',
+            '--disable-popup-blocking',
+            '--disable-prompt-on-repost'
+          ],
+          slowMo: 500 // Slower for POS interactions
+        }
+      },
+    },
+
+    // POS Local Development (for isolated systems)
+    {
+      name: 'pos-local',
+      use: {
+        ...devices['Desktop Chrome'],
+        viewport: { width: 1024, height: 768 },
+        baseURL: process.env.POS_LOCAL_URL || 'http://localhost:8080',
+        launchOptions: {
+          args: [
+            '--kiosk',
+            '--disable-web-security', // For local file access
+            '--allow-file-access-from-files',
+            '--disable-features=VizDisplayCompositor'
+          ],
+          slowMo: 500
+        }
+      },
+    },
+
+    // POS Mock/Simulation (for development)
+    {
+      name: 'pos-mock',
+      use: {
+        ...devices['Desktop Chrome'],
+        viewport: { width: 1024, height: 768 },
+        baseURL: 'http://localhost:3000', // Mock POS server
+        launchOptions: {
+          slowMo: 1000 // Slower for debugging
         }
       },
     },
